@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 import configparser
 config = configparser.ConfigParser()
-config.read("./src/assets/config.ini")
+config.read("./src/db/config.ini")
 
 cloudinary.config(
     cloud_name = config["cloudinary"]["cloud_name"],
