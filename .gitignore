@@ -1,5 +1,5 @@
 # custom config for this project
-config.ini
+*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
