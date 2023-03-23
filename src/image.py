@@ -3,7 +3,8 @@ import cloudinary
 from cloudinary.utils import cloudinary_url
 from cloudinary.uploader import upload as cloudinary_upload
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from src.mixin import DictMixin
+from dataclasses import dataclass, field
 import configparser
 config = configparser.ConfigParser()
 config.read("./src/db/config.ini")

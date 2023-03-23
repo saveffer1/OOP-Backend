@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
-from image import Image
+from src.image import Image
+from src.mixin import DictMixin
 
 class UserStatus(Enum):
     online = 1
     idel = 2
     dnd = 3
     invisible = 4
-    
+
 @dataclass
-class Account(ABC):
+class Account(DictMixin, ABC):
     email: str
     user_name: str
     user_pass: str
@@ -53,3 +54,24 @@ class User(Account):
     
     def change_avatar(self, avatar: Image):
         self.avatar = avatar.upload_image()
+
+
+@dataclass
+class AccountSystem():
+    user_account: list = field(default_factory=list)
+    admin_account: list = field(default_factory=list)
+
+    def register(self, account: User):
+        if account in self.user_account:
+            return False
+        elif account.email in [user.email for user in self.user_account]:
+            return False
+        else:
+            self.user_account.append(account)
+            return True
+    
+    def login(self, account: User):
+        if account in self.user_account:
+            account.login()
+        else:
+            raise Exception("Account not found")
