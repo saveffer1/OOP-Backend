@@ -20,5 +20,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def main():
-    print("complete!")
+
+@app.post("/ping")
+@app.get("/ping")
+async def ping():
+    return {'msg': 'pong'}
+
+@app.post("/api/register")
+async def register_user(user: User):
+    pass
