@@ -4,45 +4,31 @@ from dataclasses import dataclass, field
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-#===============================================================================#
-### src classes
-from src.account import AccountSystem, User, Admin
-from src.image import Image
-from src.mixin import DictMixin
-from src.db.connect import client
-from src.db.accountschema import UserSchema
+from functools import partial
+### router
+import src.client as endpoint
 #===============================================================================#
 
-@dataclass
-class System(DictMixin):
-    account : AccountSystem = field(default_factory=AccountSystem)
+def create_app():
+    fast_app = FastAPI(title='Discord Clone')
+    fast_app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    return fast_app
 
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = create_app()
 
 @app.get('/', status_code=200)
 @app.get('/ping', status_code=200)
 @app.post('/ping', status_code=200)
 async def healthchk():
-    return {'status_code': 200, 'message': 'OK'}
+    return {'status_code': 200, 'detail': 'OK'}
 
-
-@app.post("/api/register", status_code=201)
-async def register_user(user: UserSchema):
-    if System.account.register(user) == True:
-        return {'status_code': 201, 'message': 'register success'}
-    else:
-        raise HTTPException(status_code=409, message="E-mail already exists")
-
-@app.post("/api/login", status_code=200)
-async def login_user(user: UserSchema):
-    System.account.login(user)
+app.include_router(endpoint.account_router, prefix='/account', tags=['account'])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
