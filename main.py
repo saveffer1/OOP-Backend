@@ -22,7 +22,3 @@ app.add_middleware(
 
 def main():
     print("complete!")
-
-if __name__ == "__main__":
-    x = Image("./src/assets/Disquote.png", 100, 100)
-    print(x.upload_file())
