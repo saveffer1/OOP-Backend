@@ -1,13 +1,11 @@
-import ntpath
+import os
 import cloudinary
 from cloudinary.utils import cloudinary_url
 from cloudinary.uploader import upload as cloudinary_upload
-from abc import ABC, abstractmethod
-from src.mixin import DictMixin
 from dataclasses import dataclass, field
 import configparser
 config = configparser.ConfigParser()
-config.read("./src/db/config.ini")
+config.read("../config.ini")
 
 cloudinary.config(
     cloud_name = config["cloudinary"]["cloud_name"],
@@ -23,10 +21,10 @@ class Image():
     high : int
     
     def upload_image(self) -> str:
-        cloudinary_upload(self.name, public_id=str(ntpath.basename(self.name)).split('.')[0])
+        cloudinary_upload(self.name, public_id=str(os.path.basename(self.name)).split('.')[0])
         url, options = cloudinary_url(
-            str(ntpath.basename(self.name)).split('.')[0], width=self.width, height=self.high, crop="fill")
-        return f"https://res.cloudinary.com/{config['cloudinary']['cloud_name']}/image/upload/{ntpath.basename(self.name)}"
+            str(os.path.basename(self.name)).split('.')[0], width=self.width, height=self.high, crop="fill")
+        return f"https://res.cloudinary.com/{config['cloudinary']['cloud_name']}/image/upload/{os.path.basename(self.name)}"
 
     def __str__(self) -> str:
-        return f"Image({self.name}, {str(ntpath.basename(self.name)).split('.')[0]}, {self.width}, {self.high})"
+        return f"Image({self.name}, {str(os.path.basename(self.name)).split('.')[0]}, {self.width}, {self.high})"
