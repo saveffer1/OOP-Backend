@@ -5,6 +5,7 @@
 - create config.ini and place into ./src/db
 
 ```
+; config.ini template
 [cloudinary]
 cloud_name = xxxxxxxxxx
 api_key = xxxxxxxxxx
