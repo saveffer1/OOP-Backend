@@ -1,19 +1,19 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 from src.model.base.enumclass import UserStatus
 
 class AccountSchema(BaseModel):
-    email: EmailStr
+    email: str
     username: str
     password: str
 
 class UpdateAccountModel(BaseModel):
-    email: Optional[EmailStr]
+    email: Optional[str]
     username: Optional[str]
     password: Optional[str]
 
 class LoginSchema(BaseModel):
-    email: EmailStr
+    email: str
     password: str
     
 class UserSchema(AccountSchema):
