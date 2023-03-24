@@ -16,7 +16,7 @@ class Account(DictMixin, ABC):
     email: str
     username: str
     password: str
-    avatar: Optional[str] = "https://res.cloudinary.com/dmtnecr2n/image/upload/UserAvatar/DiscordDefaultAvatar.jpg"
+    avatar: Optional[str] = "https://res.cloudinary.com/dmtnecr2n/image/upload/v1679560565/DiscordDefaultAvatar.jpg"
     tag: Optional[str] = "0000"
     
     @abstractmethod
@@ -38,7 +38,7 @@ class Admin(Account):
         print("Admin logout")
     
 class User(Account):
-    status : Optional[UserStatus] = UserStatus.online
+    status : UserStatus = UserStatus.online
     
     def login(self):
         print("User login")
@@ -77,3 +77,18 @@ class AccountSystem(DictMixin):
                 return False
         else:
             return False
+
+
+system = AccountSystem()
+y = UserSchema(email="sf@user.gg", username="sf10s", password="save2345")
+
+
+def login(user: LoginSchema):
+    if system.user_login(user):
+        return {'status_code': 200, 'detail': 'success', 'data': system.user_login(user)}
+    else:
+        return {'status_code': 401, 'detail': 'error', 'data': system.user_login(user)}
+    
+
+system.add_user(y)
+print(login(y))
