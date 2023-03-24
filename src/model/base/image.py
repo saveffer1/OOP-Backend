@@ -5,7 +5,7 @@ from cloudinary.uploader import upload as cloudinary_upload
 from dataclasses import dataclass, field
 import configparser
 config = configparser.ConfigParser()
-config.read("../config.ini")
+config.read("./config.ini")
 
 cloudinary.config(
     cloud_name = config["cloudinary"]["cloud_name"],
@@ -24,7 +24,7 @@ class Image():
         cloudinary_upload(self.name, public_id=str(os.path.basename(self.name)).split('.')[0])
         url, options = cloudinary_url(
             str(os.path.basename(self.name)).split('.')[0], width=self.width, height=self.high, crop="fill")
-        return f"https://res.cloudinary.com/{config['cloudinary']['cloud_name']}/image/upload/{os.path.basename(self.name)}"
+        return f"https://res.cloudinary.com/{config['cloudinary']['cloud_name']}/image/upload/UserAvatar/{os.path.basename(self.name)}"
 
     def __str__(self) -> str:
         return f"Image({self.name}, {str(os.path.basename(self.name)).split('.')[0]}, {self.width}, {self.high})"
