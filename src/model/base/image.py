@@ -3,6 +3,9 @@ import cloudinary
 from cloudinary.utils import cloudinary_url
 from cloudinary.uploader import upload as cloudinary_upload
 from dataclasses import dataclass, field
+import streamlit as st
+
+"""
 import configparser
 config = configparser.ConfigParser()
 config.read("./config.ini")
@@ -13,6 +16,9 @@ cloudinary.config(
     api_secret = config["cloudinary"]["api_secret"],
     secure=True
 )
+"""
+
+config = st.secrets
 
 @dataclass
 class Image():
