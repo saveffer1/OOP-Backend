@@ -30,5 +30,7 @@ async def healthchk():
 
 app.include_router(endpoint.account_router, prefix='/account', tags=['account'])
 
+"""
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8080)
+"""
