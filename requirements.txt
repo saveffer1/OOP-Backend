@@ -4,5 +4,3 @@ pydantic==1.10.2
 streamlit==1.20.0
 uvicorn==0.21.1
 pydantic[email]
-pyzmq
-ipykernel
