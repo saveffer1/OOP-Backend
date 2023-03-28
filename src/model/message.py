@@ -34,19 +34,20 @@ class Message:
 
 
 
-
+@dataclass
 class Embedded:
     title:str
     description:str
     url:str
     color:str
 
+@dataclass
 class Attachment:
     filename:str
     file_type:str
     url:str
 
-
+@dataclass
 class Emoji:
     name:str
     # unicode_code:
