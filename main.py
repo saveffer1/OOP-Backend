@@ -1,4 +1,6 @@
 # ===============================================================================#
+import os
+import glob
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 import uvicorn
@@ -8,6 +10,13 @@ from functools import partial
 ### router
 import src.client as endpoint
 #===============================================================================#
+""" del all resource before start server"""
+path = ['server', 'user_avatar', 'server_avatar']
+for i in path:
+    files = glob.glob(f'resource/{i}/*')
+    for f in files:
+        os.remove(f)
+# ===============================================================================#
 
 def create_app():
     fast_app = FastAPI(title='Discord Clone')
@@ -31,4 +40,4 @@ async def healthchk():
 app.include_router(endpoint.account_router, prefix='/account', tags=['account'])
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8080)
+    uvicorn.run("main:app", host="localhost", port=8080, reload=True)
