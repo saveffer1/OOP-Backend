@@ -4,7 +4,7 @@ from typing import Optional
 from enum import Enum
 ### model
 from src.model.util import DictMixin, EmailStr, UserStatus
-from src.model.account import Admin, AccountSystem
+from src.model.account import AccountSystem, Admin
 from src.model.room import ServerSystem
 
 @dataclass

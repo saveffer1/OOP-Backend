@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
 from src.model.util import DictMixin, EmailStr, UserStatus
-from src.model.account import Admin, User
 
 @dataclass
 class Channel(DictMixin):

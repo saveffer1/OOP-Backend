@@ -1,2 +1,2 @@
-from src.model.account.account import UserStatus, User, Admin
-from src.model.account.system import AccountSystem
+from .account import Admin, User
+from .account_system import AccountSystem
