@@ -3,7 +3,6 @@ import os
 import glob
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from functools import partial
@@ -77,8 +76,3 @@ async def openapi(username: str = Depends(get_current_username)):
     return get_openapi(title=app.title, version=app.version, routes=app.routes)
 
 app.include_router(router_account, prefix='/account', tags=['account'])
-
-if __name__ == "__main__":
-    initial_startup()
-    uvicorn.run("main:app", host="localhost", port=8080, reload=True)
-
