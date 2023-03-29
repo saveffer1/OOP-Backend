@@ -1,7 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from src.model.util.enumclass import UserStatus
-from src.model.util.email import EmailStr
+from src.model.util import UserStatus, EmailStr
 
 class AccountSchema(BaseModel):
     email: EmailStr

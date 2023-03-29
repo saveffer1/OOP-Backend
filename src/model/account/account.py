@@ -2,10 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
-from src.model.util.mixin import DictMixin
-from src.model.util.enumclass import UserStatus
-from src.model.util.email import EmailStr
-
+from src.model.util import DictMixin, UserStatus, EmailStr
 @dataclass
 class Account(DictMixin, ABC):
     id: int
