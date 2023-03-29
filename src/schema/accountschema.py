@@ -5,7 +5,7 @@ from src.model.util import UserStatus, EmailStr
 class AccountSchema(BaseModel):
     email: EmailStr
     username: str
-    password: bytes
+    password: str
     avatar: Optional[str] = "https://res.cloudinary.com/dmtnecr2n/image/upload/UserAvatar/DiscordDefaultAvatar.jpg"
 
 class UpdateAccountModel(BaseModel):
@@ -19,7 +19,7 @@ class LoginSchema(BaseModel):
     password: str
     
 class UserSchema(AccountSchema):
-    status: UserStatus = UserStatus.online
+    status: Optional[UserStatus] = UserStatus.online
 
 class UpdateUserModel(UpdateAccountModel):
     status: Optional[UserStatus] = UserStatus.online

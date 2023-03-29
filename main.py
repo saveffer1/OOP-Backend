@@ -14,14 +14,22 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 #===============================================================================#
 ### router
-import src.client as endpoint
+from src.router import router as router_account
 #===============================================================================#
-""" del all resource before start server"""
-path = ['server', 'user_avatar', 'server_avatar']
-for i in path:
-    files = glob.glob(f'resource/{i}/*')
-    for f in files:
-        os.remove(f)
+def initial_startup():
+    resource = 'resource'
+    path = ['server', 'user_avatar', 'server_avatar']
+    if os.path.exists(resource):
+        """ del all resource before start server"""
+        for folder in path:
+            files = glob.glob(f'resource/{folder}/*')
+            for f in files:
+                os.remove(f)
+    else:
+        """ check if not resource folder create it """
+        os.mkdir(resource)
+        for folder in path:
+            os.mkdir(resource +'/'+ folder)
 # ===============================================================================#
 
 def create_app():
@@ -68,8 +76,9 @@ async def get_documentation(username: str = Depends(get_current_username)):
 async def openapi(username: str = Depends(get_current_username)):
     return get_openapi(title=app.title, version=app.version, routes=app.routes)
 
-app.include_router(endpoint.account_router, prefix='/account', tags=['account'])
+app.include_router(router_account, prefix='/account', tags=['account'])
 
 if __name__ == "__main__":
+    initial_startup()
     uvicorn.run("main:app", host="localhost", port=8080, reload=True)
 
