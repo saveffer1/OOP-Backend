@@ -2,16 +2,18 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
-from src.model.util.mixin import DictMixin
 ### model
-from src.model.account.account import Admin, User
-import src
+from src.model.util import DictMixin, EmailStr, UserStatus
+from src.model.account import Admin, AccountSystem
+from src.model.room import ServerSystem
 
 @dataclass
 class System(DictMixin, ABC):
     account: AccountSystem
+    server: ServerSystem
 
 account = AccountSystem()
+server = ServerSystem()
 
 """ create admin account """
 ADMIN = [
@@ -25,4 +27,4 @@ for admin in ADMIN:
     account.admin_account[admin.email] = admin
     account.admin_id += 1
 
-system = System(account)
+system = System(account, server)

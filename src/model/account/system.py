@@ -3,14 +3,9 @@ from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
 import bcrypt
-from src.model.util.mixin import DictMixin
-from src.model.util.enumclass import UserStatus
-from src.model.util.email import EmailStr
-from src.model.account.account import Admin, User
-from src.schema.accountschema import (
-    AccountSchema as AdminSchema, UpdateAccountModel as UpdateAdminModel,
-    UserSchema, UpdateUserModel, LoginSchema
-)
+from src.model.util import DictMixin, UserStatus, EmailStr
+from src.model.account import Admin, User
+from src.schema import UserSchema, LoginSchema
 
 
 @dataclass

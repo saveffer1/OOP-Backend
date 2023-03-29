@@ -4,12 +4,8 @@ import bcrypt
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, status
 from typing import Optional
 from src.model.util.email import EmailStr
-from src.client.cloudinary import *
-from src.model.discordsystem import system
-from src.schema.accountschema import (
-    AccountSchema as AdminSchema, UpdateAccountModel as UpdateAdminModel, 
-    UserSchema, UpdateUserModel, LoginSchema
-)
+from src.model import system
+from src.schema import UserSchema, LoginSchema
 
 router = APIRouter()
 

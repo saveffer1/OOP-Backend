@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
-from model.util.mixin import DictMixin
-
+from src.model.util import DictMixin, EmailStr, UserStatus
 @dataclass
 class Invite(DictMixin):
     id:int
