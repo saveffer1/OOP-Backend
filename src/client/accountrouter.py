@@ -3,7 +3,7 @@ import aiofiles
 import bcrypt
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, status
 from typing import Optional
-from src.model.base.email import EmailStr
+from src.model.util.email import EmailStr
 from src.client.cloudinary import *
 from src.model.discordsystem import system
 from src.schema.accountschema import (
@@ -13,7 +13,7 @@ from src.schema.accountschema import (
 
 router = APIRouter()
 
-@router.post('/register', status_code=201)
+@router.post('/register', status_code=201, tags=['user'])
 async def register(email: EmailStr, username: str, password: str, image: UploadFile = File(None)):
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(5))
     user = UserSchema(email=email, username=username, password=hashed_password)
@@ -21,8 +21,7 @@ async def register(email: EmailStr, username: str, password: str, image: UploadF
         user = system.account.user_account[user.email]
         if image is not None:
             if image.content_type not in ['image/png', 'image/jpeg', 'image/gif']:
-                raise HTTPException(
-                    status_code=415, detail='Unsupported Media Type')
+                raise HTTPException(status_code=415, detail='Unsupported Media Type')
             else:
                 try:
                     async with aiofiles.open(f'resource/user_avatar/{user.id}_{image.filename}', 'wb') as f:
@@ -43,7 +42,8 @@ async def register(email: EmailStr, username: str, password: str, image: UploadF
         del user
         raise HTTPException(status_code=409, detail='Account already exists')
     
-@router.post('/login', status_code=200)
+
+@router.post('/login', status_code=200, tags=['user'])
 async def login(user: LoginSchema):
     if system.account.user_login(user):
         return {'status_code': 200, 'detail': 'success'}
