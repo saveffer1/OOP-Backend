@@ -16,5 +16,5 @@ api_secret = xxxxxxxxxx
 - run with cmd
   
 ```cmd
-uvicorn main:app --reload
+uvicorn src.main:app --reload
 ```
