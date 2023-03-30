@@ -22,14 +22,15 @@ class Account(DictMixin, ABC):
     
     # def change_avatar(self, avatar: Image):
     #     self.avatar = avatar.upload_image()
-    
+@dataclass    
 class Admin(Account):
     def login(self):
         print("Admin login")
     
     def logout(self):
         print("Admin logout")
-    
+        
+@dataclass    
 class User(Account):
     status : Optional[UserStatus] = UserStatus.online
     friends: Optional[list] = field(default_factory=list)
@@ -41,5 +42,18 @@ class User(Account):
     def logout(self):
         print("User logout")
     
-    def change_status(self, status: UserStatus):
-        self.status = status
+    @property
+    def state(self):
+        return self.status
+    
+    @state.setter
+    def state(self, input: int):
+        self.status = input
+
+    @property
+    def profile_image(self):
+        return self.avatar
+    
+    @profile_image.setter
+    def profile_image(self, input: str):
+        self.avatar = input
