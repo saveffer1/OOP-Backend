@@ -1,7 +1,7 @@
 import os
 import aiofiles
 import json
-from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, status
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, status, Response
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Optional
@@ -67,6 +67,12 @@ async def login(user: LoginSchema):
         return resp
     else:
         raise HTTPException(status_code=401, detail='Unauthorized')    
+
+@router.get('/logout', status_code=200, tags=['user'])
+def logout(response: Response):
+  response = RedirectResponse("/account/authen", status_code=302)
+  response.delete_cookie(key="authen")
+  return response
 
 @router.get('/authen', status_code=200, tags=['user'])
 async def getPrivateendpoint(_=Depends(manager)):
