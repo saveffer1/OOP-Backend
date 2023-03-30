@@ -15,6 +15,12 @@ class AccountSystem(DictMixin):
     user_id: int = 1
     admin_id: int = 1
 
+    def get_user_account(self):
+        return [user for user in self.user_account.values()]
+    
+    def get_admin_account(self):
+        return [admin for admin in self.admin_account.values()]
+    
     def add_user(self, schema: UserSchema):
         """ register function add the user obj to user_account """
         if not self.user_account or schema.email not in self.user_account:
@@ -59,3 +65,34 @@ class AccountSystem(DictMixin):
             return login_state
         else:
             return False
+    
+    def admin_login(self, schema: LoginSchema):
+        """ login function check email and password in admin_account """
+        if not self.admin_account:
+            return False
+        elif schema.email in self.admin_account:
+            is_login_pass = self.check_password(
+                schema.password, self.admin_account[schema.email].password
+            )
+            login_state = is_login_pass
+            if is_login_pass:
+                self.admin_account[schema.email].login()
+            return login_state
+        else:
+            return False
+    
+    def get_status(self, email: EmailStr):
+        """ get user status """
+        return self.user_account[email].status
+    
+    def set_status(self, email: EmailStr, status: UserStatus):
+        """ set user status """
+        self.user_account[email].status = status
+    
+    def get_avatar(self, email: EmailStr):
+        """ get user avatar """
+        return self.user_account[email].avatar
+    
+    def set_avatar(self, email: EmailStr, avatar: str):
+        """ set user avatar """
+        self.user_account[email].avatar = avatar

@@ -19,8 +19,11 @@ class LoginSchema(BaseModel):
     password: str
     
 class UserSchema(AccountSchema):
-    status: Optional[UserStatus] = UserStatus.online
+    #status: UserStatus = UserStatus.online
+    pass
 
-class UpdateUserModel(UpdateAccountModel):
-    status: Optional[UserStatus] = UserStatus.online
+class UpdateUserModel(BaseModel):
+    username: Optional[str]
+    avatar: Optional[str]
+    status: Optional[UserStatus]
     
