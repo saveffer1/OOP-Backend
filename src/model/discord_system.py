@@ -15,16 +15,4 @@ class System(DictMixin, ABC):
 account = AccountSystem()
 server = ServerSystem()
 
-""" create admin account """
-ADMIN = [
-    Admin(0, "sff@mail.com", "sff", "123456"),
-    Admin(0, "pai@mail.com", "pai", "123456"),
-    Admin(0, "ton@mail.com", "jeak", "123456"),
-    Admin(0, "nook@mail.com", "nook", "123456")
-]
-for admin in ADMIN:
-    admin.id = account.admin_id
-    account.admin_account[admin.email] = admin
-    account.admin_id += 1
-
 system = System(account, server)
