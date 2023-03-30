@@ -29,7 +29,7 @@ def initial_startup():
 # ===============================================================================#
 
 def create_app():
-    fast_app = FastAPI(title='Discord Clone', docs_url=None, redoc_url=None, openapi_url=None)
+    fast_app = FastAPI(title='Discord Clone', docs_url=None, redoc_url=None, openapi_url='/admin/openapi.json')
     fast_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

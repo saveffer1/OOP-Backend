@@ -2,7 +2,6 @@ from fastapi import Depends, APIRouter, HTTPException, status
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from fastapi.openapi.utils import get_openapi
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from src.main import app
 import secrets
 
 router = APIRouter()
@@ -29,7 +28,3 @@ async def get_documentation(username: str = Depends(get_current_username)):
 async def get_documentation(username: str = Depends(get_current_username)):
     return get_redoc_html(openapi_url="/admin/openapi.json", title="redoc")
 
-
-@router.get("/openapi.json", tags=['admin'])
-async def openapi(username: str = Depends(get_current_username)):
-    return get_openapi(title=app.title, version=app.version, routes=app.routes)
