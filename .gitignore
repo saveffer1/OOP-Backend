@@ -1,6 +1,6 @@
 # custom config for this project
 *.ini
-test.*
+test.py
 resource/
 
 # Byte-compiled / optimized / DLL files
