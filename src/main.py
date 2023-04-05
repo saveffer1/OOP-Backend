@@ -30,9 +30,16 @@ def initial_startup():
 
 def create_app():
     fast_app = FastAPI(title='Discord Clone', docs_url=None, redoc_url=None, openapi_url='/admin/openapi.json')
+    # fast_app.add_middleware(
+    #     CORSMiddleware,
+    #     allow_origins=["*"],
+    #     allow_credentials=True,
+    #     allow_methods=["*"],
+    #     allow_headers=["*"],
+    # )
     fast_app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=["http://localhost:5500", "http://127.0.0.1:5500", "http://10.2.226.209:5500", "http://10.2.226.222:5500"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
