@@ -57,3 +57,6 @@ class User(Account):
     @profile_image.setter
     def profile_image(self, input: str):
         self.avatar = input
+    
+    def get_info(self):
+        return {'id': self.id, 'email': self.email, 'username': self.username, 'tag': self.tag, 'avatar': self.avatar, 'status': self.status}
