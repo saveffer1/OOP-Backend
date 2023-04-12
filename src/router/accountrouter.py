@@ -42,40 +42,38 @@ async def register(account: UserSchema = Depends(UserSchema), image: UploadFile 
         raise HTTPException(status_code=409, detail='Account already exists')   
 
 @router.post('/login', status_code=200, tags=['user'])
-async def login(user: LoginSchema):
+async def login(user: LoginSchema, request: Request, resp: Response):
+    print(user.email, user.password)
     if system.account.user_login(user):
-        if user.email in system.logged_in_users:
-            system.logged_in_users.remove(user.email)
-            raise HTTPException(status_code=409, detail='Already logged in on another device or closed the browser without logging out')
+        # if user.email in system.logged_in_users:
+        #     system.logged_in_users.remove(user.email)
+        #     raise HTTPException(status_code=409, detail='Already logged in on another device or closed the browser without logging out')
         
-        access_token = token_manager.create_access_token(
-            data={"sub": user.email}, 
-            expires_delta=timedelta(hours=12))
+        refer = "http://"+request.headers['referer'].split('/')[2]
+        print(refer)
+        access_token = token_manager.create_access_token(data={"sub": user.email})
 
         token = jsonable_encoder(access_token)
 
-        resp = RedirectResponse(url="/account/auth", status_code=302)
+        #resp = RedirectResponse(url="/account/auth", status_code=302)
         resp.set_cookie(
             "authen",
             value=f"{token}",
             samesite="lax",
             secure=False,
+            httponly=True,
+            max_age=43200,
         )
         
-        system.logged_in_users.add(user.email)
+        # system.logged_in_users.add(user.email)
         
-        return resp
+        return {'status_code': 200, 'detail': 'Authorized'}
     else:
         raise HTTPException(status_code=401, detail='Unauthorized')  
 
 @router.get('/logout', status_code=200, tags=['user'])
 async def logout(response: Response):
-    token = response.cookies.get("authen")
-    email = token_manager.decode_access_token(token)
-    system.logged_in_users.remove(email)
-    response = RedirectResponse("/account/login")
-    response.delete_cookie(key="authen")
-    return response
+    response.delete_cookie("authen")
 
 @router.get('/auth', status_code=200, tags=['user'])
 async def auth(request: Request):

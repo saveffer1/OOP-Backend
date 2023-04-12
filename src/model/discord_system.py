@@ -9,9 +9,9 @@ from src.model.room import ServerSystem
 
 @dataclass
 class System(DictMixin, ABC):
-    logged_in_users: set = field(default_factory=set)
     account: AccountSystem
     server: ServerSystem
+    logged_in_users: set = field(default_factory=set)
 
 account = AccountSystem()
 server = ServerSystem()
