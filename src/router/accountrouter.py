@@ -48,14 +48,11 @@ async def login(user: LoginSchema, request: Request, resp: Response):
         # if user.email in system.logged_in_users:
         #     system.logged_in_users.remove(user.email)
         #     raise HTTPException(status_code=409, detail='Already logged in on another device or closed the browser without logging out')
-        
-        refer = "http://"+request.headers['referer'].split('/')[2]
-        print(refer)
+
         access_token = token_manager.create_access_token(data={"sub": user.email})
 
         token = jsonable_encoder(access_token)
 
-        #resp = RedirectResponse(url="/account/auth", status_code=302)
         resp.set_cookie(
             "authen",
             value=f"{token}",
@@ -72,8 +69,8 @@ async def login(user: LoginSchema, request: Request, resp: Response):
         raise HTTPException(status_code=401, detail='Unauthorized')  
 
 @router.get('/logout', status_code=200, tags=['user'])
-async def logout(response: Response):
-    response.delete_cookie("authen")
+async def logout(resp: Response):
+    resp.delete_cookie("authen")
 
 @router.get('/auth', status_code=200, tags=['user'])
 async def auth(request: Request):

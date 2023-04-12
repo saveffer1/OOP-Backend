@@ -25,6 +25,6 @@ async def get_documentation(username: str = Depends(get_current_username)):
 
 
 @router.get("/redoc")
-async def get_documentation(username: str = Depends(get_current_username)):
+async def get_redocumentation(username: str = Depends(get_current_username)):
     return get_redoc_html(openapi_url="/admin/openapi.json", title="redoc")
 
