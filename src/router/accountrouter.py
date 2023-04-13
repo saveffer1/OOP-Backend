@@ -2,12 +2,13 @@ from datetime import datetime, timedelta
 import os
 import aiofiles
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, Response, Request
-from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
+from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse, FileResponse
 from fastapi.encoders import jsonable_encoder
 from jose import JWTError
 from src.model.discord_system import system
 from src.schema import UserSchema, LoginSchema
 from src.model.util import UserStatus, EmailStr, TokenData
+from src.router import cloudinary, cloudinary_upload, cloudinary_url, cloudinary_destroy
 import configparser
 config = configparser.ConfigParser()
 config.read('./config.ini')
@@ -19,8 +20,8 @@ token_manager = TokenData(secret=SECRET, algorithm='HS256')
 router = APIRouter()
 
 @router.post('/register', status_code=201, tags=['user'])
-async def register(account: UserSchema = Depends(UserSchema), image: UploadFile | None = None):
-    user = UserSchema(email=account.email, username=account.username, password=account.password)
+async def register(email: EmailStr, username: str, password: str, image: UploadFile = File(None)):
+    user = UserSchema(email=email, username=username, password=password)
     if system.account.add_user(user):
         user = system.account.user_account[user.email]
         if image:
@@ -29,17 +30,24 @@ async def register(account: UserSchema = Depends(UserSchema), image: UploadFile 
                     status_code=415, detail='Unsupported Media Type')
             else:
                 try:
-                    async with aiofiles.open(f'resource/user_avatar/{user.id}_{image.filename}', 'wb') as f:
-                        content = await image.read()
-                        await f.write(content)
+                    content = await image.read()
+                    cloudinary_upload(
+                        content,
+                        folder="UserAvatar",
+                        public_id=f"{user.id}_{user.username}"
+                    )
+                    url, options = cloudinary_url(f"UserAvatar/{user.id}_{user.username}", width=150, height=150, crop="fill")
                 except:
                     raise HTTPException(
                         status_code=500, detail='Internal Server Error')
-                user.avatar = f'resource/user_avatar/{user.id}_{image.filename}'
+                user.avatar = url
+        else:
+            user.avatar = 'https://res.cloudinary.com/dmtnecr2n/image/upload/UserAvatar/DiscordDefaultAvatar.jpg'
         return {'status_code': 201, 'detail': 'success'}
     else:
         del user
-        raise HTTPException(status_code=409, detail='Account already exists')   
+        raise HTTPException(status_code=409, detail='Account already exists')
+
 
 @router.post('/login', status_code=200, tags=['user'])
 async def login(user: LoginSchema, request: Request, resp: Response):

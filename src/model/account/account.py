@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
 from src.model.util import DictMixin, UserStatus, EmailStr
+
 @dataclass
 class Account(DictMixin, ABC):
     id: int
@@ -48,7 +49,7 @@ class User(Account):
     
     @state.setter
     def state(self, input: int):
-        self.status = input
+        self.status = UserStatus(input)
 
     @property
     def profile_image(self):
@@ -59,4 +60,5 @@ class User(Account):
         self.avatar = input
     
     def get_info(self):
-        return {'id': self.id, 'email': self.email, 'username': self.username, 'tag': self.tag, 'avatar': self.avatar, 'status': self.status}
+        if self.avatar :
+            return {'id': self.id, 'email': self.email, 'username': self.username, 'tag': self.tag, 'avatar': self.avatar, 'status': self.status}
