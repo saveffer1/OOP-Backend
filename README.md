@@ -1,6 +1,10 @@
 # Discord-OOP-Backend
 discord clone OOP class
 
+# Closed
+
+- move it to --> https://github.com/saveffer1/OOP-Disquote
+
 # How to use
 
 - create config.ini in root directory
